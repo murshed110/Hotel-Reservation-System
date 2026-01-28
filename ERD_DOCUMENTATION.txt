@@ -1,0 +1,95 @@
+==============================================
+HOTEL RESERVATION SYSTEM - ENTITY RELATIONSHIP DIAGRAM
+==============================================
+
+ENTITIES:
+---------
+1. ROOM ENTITY
+   - Primary Key: roomNumber
+   - Attributes: roomType, pricePerNight, capacity, hasBalcony, isAvailable
+   - Serializable: Yes (saved in rooms.ser file)
+   
+2. CUSTOMER ENTITY  
+   - Primary Key: customerId
+   - Attributes: firstName, lastName, email, phone, address, idType, idNumber
+   - Serializable: Yes (saved in customers.ser file)
+   
+3. RESERVATION ENTITY (LINK ENTITY)
+   - Primary Key: reservationId
+   - Foreign Keys: customer (links to Customer), room (links to Room)
+   - Attributes: checkInDate, checkOutDate, numberOfGuests, status, totalAmount
+   - Serializable: Yes (saved in reservations.ser file)
+
+RELATIONSHIPS:
+--------------
+1. One Customer can make Many Reservations (1:N)
+2. One Room can be booked in Many Reservations (1:N)
+3. Each Reservation connects One Customer to One Room (M:1 to both)
+4. Reservation is the LINK ENTITY that connects Customer and Room
+
+DATA FLOW DIAGRAM:
+------------------
+Customer → makes → Reservation → books → Room
+
+CLASS DIAGRAM:
+--------------
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│    Customer     │      │      Room       │      │  Reservation    │
+├─────────────────┤      ├─────────────────┤      ├─────────────────┤
+│ - customerId    │      │ - roomNumber    │      │ - reservationId │
+│ - firstName     │      │ - roomType      │      │ - customer      │
+│ - lastName      │      │ - pricePerNight │      │ - room          │
+│ - email         │      │ - capacity      │      │ - checkInDate   │
+│ - phone         │      │ - hasBalcony    │      │ - checkOutDate  │
+│ - address       │      │ - isAvailable   │      │ - numberOfGuests│
+│ - idType        │      │                 │      │ - status        │
+│ - idNumber      │      │                 │      │ - totalAmount   │
+├─────────────────┤      ├─────────────────┤      ├─────────────────┤
+│ + Customer()    │      │ + Room()        │      │ + Reservation() │
+│ + getters()     │      │ + getters()     │      │ + getters()     │
+│ + setters()     │      │ + setters()     │      │ + setters()     │
+│ + toString()    │      │ + toString()    │      │ + toString()    │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
+         │                       │                          │
+         └───────────────────────┴──────────────────────────┘
+                                 │
+                         implements Serializable
+
+ENUM CLASSES IMPLEMENTED:
+-------------------------
+1. RoomType: STANDARD, DELUXE, SUITE, EXECUTIVE, PRESIDENTIAL
+2. ReservationStatus: PENDING, CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELLED
+3. IdType: PASSPORT, DRIVERS_LICENSE, NATIONAL_ID, OTHER
+
+SERIALIZATION DETAILS:
+----------------------
+- Each entity class implements Serializable interface
+- Data saved in 3 separate sequential-access files:
+  1. rooms.ser → Room objects
+  2. customers.ser → Customer objects
+  3. reservations.ser → Reservation objects
+- Uses ObjectOutputStream for writing and ObjectInputStream for reading
+- All data persists between application sessions
+
+SWING GUI COMPONENTS:
+---------------------
+1. RoomForm: Manage rooms with JTable display
+2. CustomerForm: Manage customers with JTable display  
+3. ReservationForm: Manage reservations with JTable display
+- Each form has: Add, Update, Delete buttons
+- Date picker implemented using JSpinner with DateEditor
+- JTable components for data retrieval and display
+
+FEATURES IMPLEMENTED:
+---------------------
+✓ Three Entity Classes with Serializable Interface
+✓ Three Separate Serialization Files
+✓ Entity Relationship with Link Entity (Reservation)
+✓ Enum Classes for Option Fields (RoomType, ReservationStatus, IdType)
+✓ Date Class Attributes with Date Picker (JSpinner with DateEditor)
+✓ Three Swing Forms with JTable Components
+✓ Complete CRUD Operations (Create, Read, Update, Delete)
+✓ Data Persistence Across Sessions
+✓ Input Validation
+✓ Search Functionality
+✓ User-Friendly Interface
